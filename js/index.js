@@ -60,24 +60,44 @@ function displayContent(){
     for(let i = 0 ; i < dataProduct.length ; i++){
             tr +=`
             <tr>
-            <td>${i+1}</td>
-            <td>${dataProduct[i].title}</td>
-            <td>${dataProduct[i].price}</td>
-            <td>${dataProduct[i].taxes}</td>
-            <td>${dataProduct[i].ads}</td>
-            <td>${dataProduct[i].discount}</td>
-            <td>${dataProduct[i].total}</td>
-            <td>${dataProduct[i].cat}</td>
-            <td><button class="update" onclick = "updateData()">Update</button></td>
-            <td><button class="delete" onclick="deleteDate(event)">Delete</button></td>
+                <td>${i+1}</td>
+                <td>${dataProduct[i].title}</td>
+                <td>${dataProduct[i].price}</td>
+                <td>${dataProduct[i].taxes}</td>
+                <td>${dataProduct[i].ads}</td>
+                <td>${dataProduct[i].discount}</td>
+                <td>${dataProduct[i].total}</td>
+                <td>${dataProduct[i].cat}</td>
+                <td><button class="update">Update</button></td>
+                <td><button class="delete" onclick="itemDelete(${i})">Delete</button></td>
             </tr>
         `
     }
     document.getElementById('tbody').innerHTML = tr;
+    deletAll()
 }
 displayContent();
 
+function itemDelete(i){
+    dataProduct.splice(i,1);
+    localStorage.product = JSON.stringify(dataProduct);
+    displayContent();
+}
 
-function deleteDate(event){
-    event.path[0].parentElement.parentElement.style.display="none";
+
+function deletAll(){
+    if(dataProduct.length > 0){
+        document.getElementById('deletAll').innerHTML =`
+            <button onclick="delAllData()"> Delete All (${dataProduct.length}) </button>
+        `
+    }else{
+        document.getElementById('deletAll').innerHTML = '';
+    }
+}
+
+
+function delAllData(){
+    localStorage.clear();
+    dataProduct.splice(0);
+    displayContent();
 }
