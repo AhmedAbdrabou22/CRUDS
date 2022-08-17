@@ -101,4 +101,7 @@ tr:nth-child(even){background-color: rgba(65, 65, 65, 0.42)}
     .inputs .price input{
         width:16%;
     }
+    #searchCategory{
+        font-size: 14px;
+    }
 }
