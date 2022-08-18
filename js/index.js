@@ -103,6 +103,7 @@ function delAllData() {
 //Search 
 let search = document.getElementById("search");
 let searchTitle = document.getElementById("searchTitle");
+let searchCategory = document.getElementById("searchCategory");
 let trs = document.querySelectorAll('tbody tr')
 console.log(search);
 console.log(trs);
@@ -112,9 +113,9 @@ function searchData(){
     trs.forEach(tr => {
         let searchgoal = tr.children[1].innerHTML.toUpperCase();
         if(!( searchgoal === seacValue)){
-            tr.style.backgroundColor="";
+            tr.style.display="none";
         }else{
-            tr.style.backgroundColor='black';
+            tr.style.display='';
         }
     });
 }
@@ -122,5 +123,24 @@ function searchData(){
     search.addEventListener('keyup',()=>{
         searchTitle.addEventListener('click',()=>{
             searchData();
+        })
+});
+
+
+function searchcat(){
+    let seacValue = search.value.toUpperCase();
+    trs.forEach(tr => {
+        let searchgoal = tr.children[7].innerHTML.toUpperCase();
+        if(!( searchgoal === seacValue)){
+            tr.style.display="none";
+        }else{
+            tr.style.display='';
+        }
+    });
+}
+
+    search.addEventListener('keyup',()=>{
+        searchCategory.addEventListener('click',()=>{
+            searchcat();
         })
 });
