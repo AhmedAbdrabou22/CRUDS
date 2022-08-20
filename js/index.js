@@ -8,6 +8,12 @@ let cat = document.getElementById("category");
 let submit = document.getElementById("submit");
 let count = document.getElementById("count");
 
+// دا معمول لو المود انشاء منتج يعمل حاجه لو الكود ابديت يعمل حاجه تانيه 
+let mood = "create"
+// variable is global to access index in function to another function 
+let tmp;
+
+
 // function get Total
 function getTotal() {
     // dont calc any operation if price value empty
@@ -28,6 +34,7 @@ if (localStorage.product != null) {
 } else {
     dataProduct = [];
 }
+// let newProduct = {};
 submit.addEventListener("click", () => {
     let newProduct = {
         title: title.value,
@@ -38,7 +45,19 @@ submit.addEventListener("click", () => {
         total: total.innerHTML,
         cat: cat.value,
     };
-    dataProduct.push(newProduct);
+    if(mood === 'create'){
+        if(count.value > 1){
+            for(let i = 0; i < count.value; i++) {
+                dataProduct.push(newProduct);
+            }
+        }else{
+            dataProduct.push(newProduct);
+        }
+    }else{
+        dataProduct[tmp] = newProduct;
+        submit.innerHTML = "Create"
+        count.style.display = 'block';
+    }
     localStorage.setItem("product", JSON.stringify(dataProduct));
     displayContent();
     clearData();
@@ -68,7 +87,7 @@ function displayContent() {
                         <td>${dataProduct[i].discount}</td>
                         <td>${dataProduct[i].total}</td>
                         <td>${dataProduct[i].cat}</td>
-                        <td><button class="update">Update</button></td>
+                        <td><button class="update" onclick = "updateData(${i})">Update</button></td>
                         <td><button class="delete" onclick="itemDelete(${i})">Delete</button></td>
                     </tr>
                 `;
@@ -108,39 +127,55 @@ let trs = document.querySelectorAll('tbody tr')
 console.log(search);
 console.log(trs);
 
-function searchData(){
+function searchData() {
     let seacValue = search.value.toUpperCase();
     trs.forEach(tr => {
         let searchgoal = tr.children[1].innerHTML.toUpperCase();
-        if(!( searchgoal === seacValue)){
-            tr.style.display="none";
-        }else{
-            tr.style.display='';
+        if (!(searchgoal === seacValue)) {
+            tr.style.display = "none";
+        } else {
+            tr.style.display = '';
         }
     });
 }
 
-    search.addEventListener('keyup',()=>{
-        searchTitle.addEventListener('click',()=>{
-            searchData();
-        })
+search.addEventListener('keyup', () => {
+    searchTitle.addEventListener('click', () => {
+        searchData();
+    })
 });
 
 
-function searchcat(){
+function searchcat() {
     let seacValue = search.value.toUpperCase();
     trs.forEach(tr => {
         let searchgoal = tr.children[7].innerHTML.toUpperCase();
-        if(!( searchgoal === seacValue)){
-            tr.style.display="none";
-        }else{
-            tr.style.display='';
+        if (!(searchgoal === seacValue)) {
+            tr.style.display = "none";
+        } else {
+            tr.style.display = '';
         }
     });
 }
 
-    search.addEventListener('keyup',()=>{
-        searchCategory.addEventListener('click',()=>{
-            searchcat();
-        })
+search.addEventListener('keyup', () => {
+    searchCategory.addEventListener('click', () => {
+        searchcat();
+    })
 });
+
+
+
+function updateData(i) {
+    title.value = dataProduct[i].title
+    price.value = dataProduct[i].price
+    taxes.value = dataProduct[i].taxes
+    ads.value = dataProduct[i].ads
+    discount.value = dataProduct[i].discount
+    cat.value = dataProduct[i].cat
+    getTotal();
+    count.style.display = 'none';
+    submit.innerHTML = 'update'
+    mood = "update"
+    tmp = i;
+}
